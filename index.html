@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>licode — AI 编程助手（Web 版）</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部导航 -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <svg class="logo" viewBox="0 0 32 32" width="28" height="28">
+          <rect x="4" y="4" width="24" height="24" rx="6" fill="var(--primary)"/>
+          <text x="16" y="21" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">L</text>
+        </svg>
+        <span class="brand-text">licode</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#/" :class="{ active: route === 'home' }">首页</a>
+        <a href="#/docs" :class="{ active: route === 'docs' }">文档</a>
+        <a href="#/blog" :class="{ active: route === 'blog' }">更新日志</a>
+        <a href="#/community" :class="{ active: route === 'community' }">社区</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" @click="toggleTheme" :title="theme === 'dark' ? '亮色模式' : '暗色模式'">
+          <svg v-if="theme === 'light'" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg v-else viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <a href="https://github.com/li63050a/licode" target="_blank" class="icon-btn" title="GitHub">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- 首页 -->
+    <main v-if="route === 'home'" class="page-home">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-inner">
+          <h1>licode</h1>
+          <p class="tagline">用 Go 编写的 AI 编程助手，单二进制、静态编译、跨平台。浏览器打开即用，手机/电脑均可使用。</p>
+          <div class="hero-actions">
+            <a href="#/docs" class="btn btn-primary">查看文档</a>
+            <a href="https://github.com/li63050a/licode/releases" target="_blank" class="btn">下载二进制</a>
+          </div>
+          <div class="hero-terminal">
+            <div class="terminal-header">
+              <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+              <span class="terminal-title">终端</span>
+            </div>
+            <div class="terminal-body">
+              <span class="prompt">$</span> ./licode --host 0.0.0.0 --port 8080<br>
+              <span class="output">licode serve 已启动: http://0.0.0.0:8080/</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 核心功能 -->
+      <section class="features">
+        <div class="container">
+          <h2 class="section-title">核心功能</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon">🤖</div>
+              <h3>多 AI 提供商</h3>
+              <p>OpenAI / Claude / Ollama / Gemini 一键切换，均用各自原生接口</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔧</div>
+              <h3>工具调用</h3>
+              <p>读写文件、代码搜索、Shell 执行，Agent 自主调用并回填结果</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🧠</div>
+              <h3>子代理系统</h3>
+              <p>explorer / builder / planner，DAG 依赖并行调度</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">💬</div>
+              <h3>多对话</h3>
+              <p>会话列表、自动标题、切换、删除、实时保存到磁盘</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔍</div>
+              <h3>联网搜索</h3>
+              <p>自建多引擎搜索 + 本地倒排索引（BM25 + 中文 bigram 分词）</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🛡️</div>
+              <h3>代码审计</h3>
+              <p>12 类静态规则 + LLM 深度分析，一键修复并自动备份</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📦</div>
+              <h3>扩展能力</h3>
+              <p>MCP 接入、Skills 技能、WASM 插件、外部工具热加载</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🌐</div>
+              <h3>离线前端</h3>
+              <p>Nuxt 3 静态打包进二进制，零 CDN 依赖，内网开箱即用</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 架构概览 -->
+      <section class="architecture">
+        <div class="container">
+          <h2 class="section-title">架构概览</h2>
+          <div class="arch-diagram">
+            <div class="arch-layer arch-web">
+              <div class="arch-label">前端层</div>
+              <div class="arch-items">
+                <span class="arch-item">浏览器 / 手机</span>
+                <span class="arch-item">Nuxt 3 SPA</span>
+                <span class="arch-item">WebSocket</span>
+              </div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-layer arch-server">
+              <div class="arch-label">服务层</div>
+              <div class="arch-items">
+                <span class="arch-item">HTTP 路由</span>
+                <span class="arch-item">WebSocket Hub</span>
+                <span class="arch-item">登录认证</span>
+                <span class="arch-item">文件管理</span>
+              </div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-layer arch-agent">
+              <div class="arch-label">Agent 层</div>
+              <div class="arch-items">
+                <span class="arch-item">主 Agent 循环</span>
+                <span class="arch-item">工具注册表</span>
+                <span class="arch-item">子代理调度器</span>
+                <span class="arch-item">上下文压缩</span>
+              </div>
+            </div>
+            <div class="arch-arrow">↓</div>
+            <div class="arch-layer arch-ai">
+              <div class="arch-label">AI 层</div>
+              <div class="arch-items">
+                <span class="arch-item">OpenAI</span>
+                <span class="arch-item">Claude</span>
+                <span class="arch-item">Ollama</span>
+                <span class="arch-item">Gemini</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 快速开始 -->
+      <section class="quickstart">
+        <div class="container">
+          <h2 class="section-title">快速开始</h2>
+          <div class="qs-steps">
+            <div class="qs-step">
+              <div class="qs-num">1</div>
+              <h3>下载</h3>
+              <pre><code>wget https://github.com/li63050a/licode/releases/latest/download/licode-linux-amd64
+chmod +x licode-linux-amd64 && mv licode-linux-amd64 licode</code></pre>
+            </div>
+            <div class="qs-step">
+              <div class="qs-num">2</div>
+              <h3>启动</h3>
+              <pre><code>./licode --host 0.0.0.0 --port 8080 --password mypass</code></pre>
+            </div>
+            <div class="qs-step">
+              <div class="qs-num">3</div>
+              <h3>使用</h3>
+              <pre><code>浏览器打开 http://your-ip:8080
+在「设置」里配置 AI 提供商 API Key
+开始提问即可</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 联系 -->
+      <footer class="home-footer">
+        <div class="container">
+          <div class="footer-links">
+            <a href="https://github.com/li63050a/licode" target="_blank">GitHub</a>
+            <a href="https://gitee.com/li63050a/licode" target="_blank">Gitee</a>
+            <a href="https://b23.tv/nDqj0DT" target="_blank">B 站</a>
+            <a href="#/community">QQ 群</a>
+            <a href="mailto:li63050@qq.com">邮箱</a>
+          </div>
+          <p class="copyright">licode · MIT License</p>
+        </div>
+      </footer>
+    </main>
+
+    <!-- 文档页 -->
+    <main v-if="route === 'docs'" class="page-docs">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="search-box">
+            <input type="text" v-model="searchQuery" placeholder="搜索文档..." @input="search">
+          </div>
+          <nav class="docs-nav">
+            <div v-for="cat in docsData" :key="cat.id" class="docs-nav-cat">
+              <div class="cat-title" @click="toggleCat(cat.id)">
+                <span class="cat-icon">{{ cat.icon }}</span>
+                <span>{{ cat.title }}</span>
+                <span class="cat-arrow" :class="{ open: openCats.includes(cat.id) }">▸</span>
+              </div>
+              <div v-show="openCats.includes(cat.id)" class="cat-children">
+                <a v-for="child in cat.children" :key="child.id"
+                   :href="'#/docs/' + cat.id + '/' + child.id"
+                   :class="{ active: currentDoc === child.id }"
+                   @click="scrollToContent">
+                  {{ child.title }}
+                </a>
+              </div>
+            </div>
+          </nav>
+        </aside>
+        <article class="docs-content" v-html="renderedContent"></article>
+      </div>
+      <!-- 搜索结果浮层 -->
+      <div v-if="searchResults.length > 0" class="search-results">
+        <div v-for="r in searchResults" :key="r.id" class="search-result-item" @click="goToDoc(r)">
+          <strong>{{ r.title }}</strong>
+          <p>{{ r.snippet }}</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- 更新日志页 -->
+    <main v-if="route === 'blog'" class="page-blog">
+      <div class="container">
+        <h1 class="page-title">更新日志</h1>
+        <div v-for="v in versions" :key="v.version" class="version-block">
+          <div class="version-header">
+            <span class="version-num">v{{ v.version }}</span>
+            <span class="version-date">{{ v.date }}</span>
+          </div>
+          <div v-if="v.features.length" class="version-section">
+            <h4>✨ 新功能</h4>
+            <ul>
+              <li v-for="(f, i) in v.features" :key="i">{{ f }}</li>
+            </ul>
+          </div>
+          <div v-if="v.fixes.length" class="version-section">
+            <h4>🐛 修复</h4>
+            <ul>
+              <li v-for="(f, i) in v.fixes" :key="i">{{ f }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 社区页 -->
+    <main v-if="route === 'community'" class="page-community">
+      <div class="container">
+        <h1 class="page-title">联系与交流</h1>
+        <div class="community-grid">
+          <a href="https://github.com/li63050a/licode" target="_blank" class="comm-card">
+            <div class="comm-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+            <h3>GitHub</h3>
+            <p>查看源码、提交 Issue 和 PR</p>
+            <span class="comm-link">github.com/li63050a/licode →</span>
+          </a>
+          <a href="https://gitee.com/li63050a/licode" target="_blank" class="comm-card">
+            <div class="comm-icon">🇨🇳</div>
+            <h3>Gitee</h3>
+            <p>国内镜像，访问更快</p>
+            <span class="comm-link">gitee.com/li63050a/licode →</span>
+          </a>
+          <a href="https://b23.tv/nDqj0DT" target="_blank" class="comm-card">
+            <div class="comm-icon">📺</div>
+            <h3>B 站</h3>
+            <p>关注获取最新动态、教程、演示</p>
+            <span class="comm-link">小帅5656 →</span>
+          </a>
+          <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=zq9BYcTtBQm6GbvWiEWiBvDWNWbqhw2%2F%2BRnGM21c0jcL%2FofGqBFeXLr%2BtYT3SkO6&busi_data=eyJncm91cENvZGUiOiIxMDI2OTM5NzQxIiwidG9rZW4iOiJxNkNWUTUxYXVxSmRHZXRvdWtkZnhaN25INzJrMmNaNFpVTjJ5ZTVLYmRvWTFuOEZTd093UXBtQi8vQWk2T1JyIiwidWluIjoiMzYzNTczNjE4MCJ9&data=073ZrPEFZXFvoEDWatbWTidAitiN4OIbiaVDWoR7hVIwJurEPC7Swm6OREVpn6omzobXLn3SRErNKxKbYDTZQA&svctype=4&tempid=h5_group_info" target="_blank" class="comm-card">
+            <div class="comm-icon">💬</div>
+            <h3>QQ 技术交流群</h3>
+            <p>群号：1026939741</p>
+            <span class="comm-link">点击加入 →</span>
+          </a>
+          <a href="mailto:li63050@qq.com" class="comm-card">
+            <div class="comm-icon">📧</div>
+            <h3>开发者邮箱</h3>
+            <p>li63050@qq.com</p>
+            <span class="comm-link">发送邮件 →</span>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/vue.global.js"></script>
+  <script src="data/docs.js"></script>
+  <script src="data/versions.js"></script>
+  <script>
+    const { createApp, ref, computed, watch, onMounted } = Vue;
+
+    createApp({
+      setup() {
+        const route = ref('home');
+        const theme = ref(localStorage.getItem('licode_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        const currentDoc = ref('');
+        const searchQuery = ref('');
+        const searchResults = ref([]);
+        const openCats = ref(['quickstart']);
+
+        // 文档数据
+        const allDocs = docsData;
+
+        // 解析路由
+        const parseRoute = () => {
+          const hash = window.location.hash.slice(1) || '/';
+          if (hash === '/' || hash === '') {
+            route.value = 'home';
+          } else if (hash.startsWith('/docs')) {
+            route.value = 'docs';
+            // 解析 /docs/catId/docId
+            const parts = hash.split('/');
+            if (parts.length >= 4) {
+              currentDoc.value = parts[3];
+              const catId = parts[2];
+              if (!openCats.value.includes(catId)) {
+                openCats.value.push(catId);
+              }
+            }
+          } else if (hash.startsWith('/blog')) {
+            route.value = 'blog';
+          } else if (hash.startsWith('/community')) {
+            route.value = 'community';
+          } else {
+            route.value = 'home';
+          }
+        };
+
+        // 渲染 markdown 到 HTML
+        const renderMd = (md) => {
+          let html = md
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+          // 代码块
+          html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+            return `<pre><code class="lang-${lang}">${code.trim()}</code></pre>`;
+          });
+          // 行内代码
+          html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+          // 标题
+          html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+          html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+          html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+          // 加粗
+          html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+          // 斜体
+          html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+          // 列表
+          html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+          html = html.replace(/(<li>.*<\/li>\n?)+/g, m => '<ul>' + m + '</ul>');
+          // 链接
+          html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+          // 换行
+          html = html.replace(/\n/g, '<br>');
+          return html;
+        };
+
+        // 当前文档内容
+        const renderedContent = computed(() => {
+          for (const cat of allDocs) {
+            for (const doc of cat.children) {
+              if (doc.id === currentDoc.value) {
+                return renderMd(doc.content);
+              }
+            }
+          }
+          // 默认显示第一篇
+          if (allDocs[0] && allDocs[0].children[0]) {
+            const firstDoc = allDocs[0].children[0];
+            if (!currentDoc.value) {
+              currentDoc.value = firstDoc.id;
+              return renderMd(firstDoc.content);
+            }
+          }
+          return '<p>请从左侧目录选择文档</p>';
+        });
+
+        // 搜索
+        const search = () => {
+          const q = searchQuery.value.trim().toLowerCase();
+          if (!q) {
+            searchResults.value = [];
+            return;
+          }
+          const results = [];
+          for (const cat of allDocs) {
+            for (const doc of cat.children) {
+              const text = (doc.title + ' ' + doc.content).toLowerCase();
+              if (text.includes(q)) {
+                const idx = text.indexOf(q);
+                results.push({
+                  id: doc.id,
+                  catId: cat.id,
+                  title: doc.title,
+                  snippet: doc.content.slice(Math.max(0, idx - 40), idx + 60).replace(/\n/g, ' ')
+                });
+              }
+            }
+          }
+          searchResults.value = results.slice(0, 8);
+        };
+
+        const goToDoc = (r) => {
+          openCats.value.push(r.catId);
+          window.location.hash = '#/docs/' + r.catId + '/' + r.id;
+          searchQuery.value = '';
+          searchResults.value = [];
+        };
+
+        const scrollToContent = () => {
+          setTimeout(() => {
+            document.querySelector('.docs-content')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        };
+
+        const toggleCat = (id) => {
+          const idx = openCats.value.indexOf(id);
+          if (idx >= 0) {
+            openCats.value.splice(idx, 1);
+          } else {
+            openCats.value.push(id);
+          }
+        };
+
+        const toggleTheme = () => {
+          theme.value = theme.value === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', theme.value);
+          localStorage.setItem('licode_theme', theme.value);
+        };
+
+        onMounted(() => {
+          document.documentElement.setAttribute('data-theme', theme.value);
+          parseRoute();
+        });
+
+        window.addEventListener('hashchange', parseRoute);
+
+        return {
+          route,
+          theme,
+          currentDoc,
+          searchQuery,
+          searchResults,
+          openCats,
+          docsData: allDocs,
+          versions: versionsData,
+          renderedContent,
+          search,
+          goToDoc,
+          toggleCat,
+          toggleTheme,
+          scrollToContent
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
