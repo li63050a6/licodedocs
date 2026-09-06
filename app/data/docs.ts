@@ -178,7 +178,7 @@ ollama pull llama3.1:8b
         content: `
 ## 终端界面（TUI）
 
-运行 \`./licode\` 后，除浏览器 Web 界面外，还内置一套仿 opencode 风格的终端交互界面（TUI）。
+运行 \`./licode\` 后，除浏览器 Web 界面外，还内置一套按 opencode 源码逐段复刻的终端交互界面（TUI）。
 
 ### BUILD / PLAN 模式
 
@@ -193,13 +193,21 @@ PLAN 模式默认禁用 \`Write\` \`Edit\` \`Delete\` \`Move\` \`Bash\` \`Shell\
 /set plan_exclude Write,Edit,Delete,Move,Bash,Shell
 \`\`\`
 
+### 界面布局
+
+全屏纯文本消息流，无顶栏。底部依次为会话输入区、元信息行、\`╹▀\` 分隔线与状态行；消息页脚显示当前模式与模型（\`▣ Build · model\`）。
+
 ### 对话显示
 
-纯文本对话：\`#\` 标题、\`+\` Thought：思考过程、\`$\` 命令、Click to expand 展开详情。输入框无前缀。
+- **用户消息**：\`▍\` 左框 + panel 底色，消息区顶部留白，连续消息对齐
+- **助手回复**：正文从第 5 列开始
+- **工具行**：运行中显示 spinner + 描述；完成显示图标 + 描述（muted）；任务完成显示 \`✓\`
+- **块工具**（如 bash）：\`▍\` 左框 + 面板底色，输出按 10/20 行折叠，\`Click to expand/collapse\` 展开/收起（支持鼠标）
+- **运行中**：状态行显示块形 spinner，按 \`Esc\` 中断
 
 ### 状态栏
 
-底部状态栏显示：\`{目录}\` \`{大小}\` \`Ctrl+p commands\` \`LiCode {版本}\`。
+底部状态行显示：\`{目录}\` \`{agents 数}\` \`Ctrl+p commands\` \`LiCode {版本}\`。
 
 ### 斜杠命令菜单
 
@@ -224,14 +232,11 @@ PLAN 模式默认禁用 \`Write\` \`Edit\` \`Delete\` \`Move\` \`Bash\` \`Shell\
 | \`/\` | 打开命令菜单 |
 | \`Tab\` | 切换 BUILD/PLAN 模式 |
 | \`Ctrl+P\` | 命令面板 |
-| \`Ctrl+C\` | 停止 / 连按两次退出 |
+| \`Ctrl+C\` | 运行中按一次停止；空闲时连按两次退出 |
 | \`上下键\` | 历史翻动 / 菜单选择 |
 | \`Enter\` | 发送 / 确认 |
+| \`Esc\` | 中断运行 |
 | \`\`（反引号） | 打开设置面板（j/k 移动，Enter 编辑） |
-
-### 颜色区分
-
-用户消息蓝色、AI 回复粉色、工具调用黄色、错误红色。
 `
       },
       {
