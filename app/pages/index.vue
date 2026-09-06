@@ -180,7 +180,7 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
       <div class="grid gap-5 md:grid-cols-3">
         <div v-reveal class="rounded-2xl border border-border bg-background p-6">
           <h3 class="flex items-center gap-2 font-semibold">
-            <span class="text-primary">◈</span> 单二进制 · 零依赖
+            <Icon name="lucide:box" class="h-4 w-4 shrink-0 text-primary" /> 单二进制 · 零依赖
           </h3>
           <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
             前端资源全部内嵌，约 7MB，不依赖 glibc，拷贝即用。
@@ -188,7 +188,7 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
         </div>
         <div v-reveal="80" class="rounded-2xl border border-border bg-background p-6">
           <h3 class="flex items-center gap-2 font-semibold">
-            <span class="text-primary">◈</span> 数据本地
+            <Icon name="lucide:database" class="h-4 w-4 shrink-0 text-primary" /> 数据本地
           </h3>
           <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
             会话、配置、索引全部落在本地磁盘，隐私可控，离线可用。
@@ -196,7 +196,7 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
         </div>
         <div v-reveal="140" class="rounded-2xl border border-border bg-background p-6">
           <h3 class="flex items-center gap-2 font-semibold">
-            <span class="text-primary">◈</span> 可编程扩展
+            <Icon name="lucide:puzzle" class="h-4 w-4 shrink-0 text-primary" /> 可编程扩展
           </h3>
           <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
             MCP / Skills / WASM / 外部工具热加载，能力边界由你定义。

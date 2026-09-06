@@ -146,7 +146,7 @@ npm run generate   # 产物在 .output/public，可直接上传任意静态托�
 #### `app/data/docs.ts`
 
 - 导出类型 `DocChild { id, title, content }` 与 `DocCategory { id, title, icon, children }`，以及 `docsData: DocCategory[]`。
-- `id` 决定路由路径：`/docs/{cat.id}/{doc.id}`；`icon` 显示在侧边栏章节标题前（Emoji）。
+- `id` 决定路由路径：`/docs/{cat.id}/{doc.id}`；`icon` 为 lucide 图标名（如 `lucide:rocket`），显示在侧边栏章节标题前。
 - `content` 为模板字符串 Markdown，支持 GFM 表格、代码块；模板字符串内反引号需转义为 `` \` ``（详见各字段写法）。
 - 新增章节 = 在 `docsData` 数组追加一个 `DocCategory`；新增文章 = 在对应 `children` 追加 `DocChild`。无需触碰 `nuxt.config.ts`，路由自动生成。
 
@@ -245,7 +245,7 @@ npm run generate   # 产物在 .output/public，可直接上传任意静态托�
 - `typescript` **锁定 5.9.3**：`typescript@7` 与 `vue-tsc` 不兼容（`./lib/tsc` 导出报错）。
 - npm 源为 **npmmirror**；fuxsto-design 0.1.1 的 peer 依赖 `lucide-vue-next ^0.577.0`（站点自身图标已改用 `@nuxt/icon`，lucide-vue-next 仅为 fuxsto 内部默认图标保留）。
 - 关键依赖：`nuxt ^4.5.2`、`tailwindcss 4.3.3`、`marked ^16`、`@tailwindcss/vite`、`@nuxt/fonts`、`@nuxt/icon`、`@iconify-json/lucide`。
-- `@nuxt/icon` 需开启 `clientBundle.scan: true`：静态 generate 下 provider 为 `iconify`，若不本地打包图标会在预渲染时请求 api.iconify.design 超时，产出空图标。
+- `@nuxt/icon` 需开启 `clientBundle.scan`：静态 generate 下 provider 为 `iconify`，若不本地打包图标会在预渲染时请求 api.iconify.design 超时，产出空图标；扫描器默认不含 `.ts` 文件，需扩展 `globInclude` 才能扫到 `docs.ts` 里的图标名。
 
 ### 关键约定与坑
 
@@ -254,7 +254,7 @@ npm run generate   # 产物在 .output/public，可直接上传任意静态托�
 - **changelog frontmatter 正则需兼容 CRLF**：Windows 保存的 `.md` 若为 CRLF 行尾，`/^---\n/` 会匹配失败导致 version/date 解析为空、首页版本错乱。正则统一用 `/^---\r?\n([\s\S]*?)\r?\n---/`；新增文件建议保持 LF。
 - **同日发布的多个 changelog 需二次排序**：仅按 `date` 排序不稳定（依赖 glob 字母序），必须「同日期再按 version 倒序」，否则首页会显示旧版本。
 - **typescript 锁定 5.9.3**：同「依赖锁定」。
-- **@nuxt/icon 图标必须本地打包**：`icon.clientBundle.scan: true`（原因见「依赖锁定与兼容性」）；fuxsto-design 的 `:icon` / `:prefix-icon` 等 prop 接收组件，用 `app/utils/iconify.ts` 的 `iconify('lucide:xxx')` 包装（自动导入），模板内直接写 `<Icon name="lucide:xxx">`。
+- **@nuxt/icon 图标必须本地打包**：`icon.clientBundle.scan`（含 `.ts` 扫描 glob，原因见「依赖锁定与兼容性」）；fuxsto-design 的 `:icon` / `:prefix-icon` 等 prop 接收组件，用 `app/utils/iconify.ts` 的 `iconify('lucide:xxx')` 包装（自动导入），模板内直接写 `<Icon name="lucide:xxx">`。全站图标统一 lucide SVG（含 `docs.ts` 分类图标与 Markdown 内容内联 SVG），不再使用 Emoji。
 - 主题切换在 `useTheme` 与 nuxt.config 内联脚本中双份实现，保证首屏不闪变；两者读取的持久化键必须一致（`licode_theme`）。
 - 文档 `content` 是模板字符串：代码块内的反引号要写成 `` \` ``，`${}` 需转义为 `\${}`，否则被插值或破坏语法。
 

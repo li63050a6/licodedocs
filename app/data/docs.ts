@@ -15,7 +15,7 @@ export const docsData: DocCategory[] = [
   {
     id: 'quickstart',
     title: '快速开始',
-    icon: '🚀',
+    icon: 'lucide:rocket',
     children: [
       {
         id: 'install',
@@ -140,7 +140,7 @@ ollama pull llama3.1:8b
   {
     id: 'features',
     title: '功能详解',
-    icon: '✨',
+    icon: 'lucide:sparkles',
     children: [
       {
         id: 'sessions',
@@ -468,11 +468,11 @@ GET  /api/search/catalog    # 已收录列表
 
 每行提供操作按钮：
 
-- ✎ 编辑（内置编辑器）
-- 🗑 删除（非空目录二次确认后递归删除）
+- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497zM15 5l4 4"/></svg> 编辑（内置编辑器）
+- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11v6m4-6v6m5-11v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> 删除（非空目录二次确认后递归删除）
 - 新建文件 / 新建文件夹
-- 🔐 修改权限
-- 👤 修改所有者
+- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g></svg> 修改权限
+- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></g></svg> 修改所有者
 
 ### 上传与下载
 
@@ -500,7 +500,7 @@ POST /api/chown              # {path, owner} uid:gid，-1 表示不变
   {
     id: 'config',
     title: '配置指南',
-    icon: '⚙️',
+    icon: 'lucide:settings',
     children: [
       {
         id: 'config-file',
@@ -588,7 +588,7 @@ tls_key = ""
   {
     id: 'security',
     title: '安全',
-    icon: '🛡️',
+    icon: 'lucide:shield-check',
     children: [
       {
         id: 'auth',
@@ -666,7 +666,7 @@ LICODE_PASSWORD=your_password ./licode
   {
     id: 'extend',
     title: '扩展开发',
-    icon: '🔧',
+    icon: 'lucide:wrench',
     children: [
       {
         id: 'skills',
@@ -862,7 +862,7 @@ func main() {
   {
     id: 'faq',
     title: '常见问题',
-    icon: '❓',
+    icon: 'lucide:circle-help',
     children: [
       {
         id: 'faq-common',
@@ -900,7 +900,7 @@ curl http://localhost:11434/api/tags
   {
     id: 'deploy',
     title: '构建与部署',
-    icon: '📦',
+    icon: 'lucide:package',
     children: [
       {
         id: 'build',

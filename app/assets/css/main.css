@@ -300,6 +300,11 @@ body {
 .md em {
   color: var(--foreground);
 }
+.md li svg,
+.md p svg,
+.md td svg {
+  vertical-align: -0.18em;
+}
 .md code {
   font-family: var(--font-mono);
   font-size: 0.86em;

@@ -34,6 +34,7 @@ export const useDocs = () => {
       .replace(/```[\s\S]*?```/g, ' ')
       .replace(/`([^`]+)`/g, '$1')
       .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/<[^>]+>/g, ' ')
       .replace(/[#>*\-\[\]()|]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()

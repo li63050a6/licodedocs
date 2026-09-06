@@ -84,7 +84,7 @@ const toggle = (id: string) => {
             @click="toggle(cat.id)"
           >
             <span class="flex items-center gap-2">
-              <span class="text-base leading-none">{{ cat.icon }}</span>
+              <Icon :name="cat.icon" class="h-4 w-4 shrink-0" />
               {{ cat.title }}
             </span>
             <Icon
