@@ -1,5 +1,17 @@
-// docs.js - 所有文档内容
-const docsData = [
+export interface DocChild {
+  id: string
+  title: string
+  content: string
+}
+
+export interface DocCategory {
+  id: string
+  title: string
+  icon: string
+  children: DocChild[]
+}
+
+export const docsData: DocCategory[] = [
   {
     id: 'quickstart',
     title: '快速开始',
@@ -117,6 +129,10 @@ ollama pull llama3.1:8b
 ### 多提供商切换
 
 在「设置」→「提供商」下拉框中已配置的提供商之间一键切换。
+
+### 模型管理
+
+每个提供商可独立添加、删除多个模型，当前模型从列表中选取；「获取模型」拉取的模型会自动合并进列表，不会改写当前激活的提供商。
 `
       }
     ]
@@ -146,6 +162,76 @@ ollama pull llama3.1:8b
 ### 自动标题
 
 首次发送消息时，系统自动以前 18 个字作为对话标题。
+
+### 会话历史回放
+
+切换会话或重连后，通过 WebSocket 协议 \`session_history\` / \`history\` 自动回放完整对话历史（含工具调用结果），不会出现空白对话。
+
+### TUI 会话操作
+
+终端界面下通过斜杠命令管理会话：\`/new\` 新建、\`/delete\` 删除、\`/branch\` 分支、\`/sessions\` 切换。详见「终端界面（TUI）」。
+`
+      },
+      {
+        id: 'tui',
+        title: '终端界面（TUI）',
+        content: `
+## 终端界面（TUI）
+
+运行 \`./licode\` 后，除浏览器 Web 界面外，还内置一套仿 opencode 风格的终端交互界面（TUI）。
+
+### BUILD / PLAN 模式
+
+按 \`Tab\` 切换两种模式：
+
+- **BUILD**：可执行工具（读写文件、运行命令、代码搜索）
+- **PLAN**：仅思考、不执行工具，先输出方案（安全预览）
+
+PLAN 模式默认禁用 \`Write\` \`Edit\` \`Delete\` \`Move\` \`Bash\` \`Shell\`，可在「设置面板」的 \`PLAN禁用工具\` 中自定义，或用命令修改：
+
+\`\`\`bash
+/set plan_exclude Write,Edit,Delete,Move,Bash,Shell
+\`\`\`
+
+### 对话显示
+
+纯文本对话：\`#\` 标题、\`+\` Thought：思考过程、\`$\` 命令、Click to expand 展开详情。输入框无前缀。
+
+### 状态栏
+
+底部状态栏显示：\`{目录}\` \`{大小}\` \`Ctrl+p commands\` \`LiCode {版本}\`。
+
+### 斜杠命令菜单
+
+输入 \`/\` 弹出命令列表，上下键选择、回车执行：
+
+| 命令 | 功能 |
+|------|------|
+| \`/new\` | 新建对话 |
+| \`/delete\` | 删除对话 |
+| \`/branch\` | 创建分支 |
+| \`/clear\` | 清空当前对话 |
+| \`/sessions\` | 会话列表 |
+| \`/set\` | 修改设置（如 \`/set model gpt-4o\`） |
+| \`/plan\` | 切换 PLAN 模式 |
+| \`/build\` | 切换 BUILD 模式 |
+| \`/help\` | 帮助 |
+
+### 快捷键
+
+| 按键 | 功能 |
+|------|------|
+| \`/\` | 打开命令菜单 |
+| \`Tab\` | 切换 BUILD/PLAN 模式 |
+| \`Ctrl+P\` | 命令面板 |
+| \`Ctrl+C\` | 停止 / 连按两次退出 |
+| \`上下键\` | 历史翻动 / 菜单选择 |
+| \`Enter\` | 发送 / 确认 |
+| \`\`（反引号） | 打开设置面板（j/k 移动，Enter 编辑） |
+
+### 颜色区分
+
+用户消息蓝色、AI 回复粉色、工具调用黄色、错误红色。
 `
       },
       {
@@ -180,6 +266,10 @@ ollama pull llama3.1:8b
 ### 配置方式
 
 在「设置」→「工具规则」中配置，如 \`Write:ask, Shell:deny\`。
+
+### 工具自动重试
+
+工具返回错误或空结果时自动重试，默认 3 次并带退避间隔。可在「设置」→「工具自动重试」中调整次数与开关。
 `
       },
       {
@@ -257,6 +347,10 @@ ollama pull llama3.1:8b
 2. 查看 unified diff 高亮
 3. 「确认修复」→ 自动生成 \`.bak\` 备份 → 写入
 
+### 审计报告
+
+审计报告以 JSON 落盘到 \`~/.licode/logs/audit/\`，扫描完成后实时通知。
+
 ### API
 
 \`\`\`bash
@@ -325,6 +419,80 @@ GET  /api/search/catalog    # 已收录列表
 - 零依赖（无向量数据库）
 - 内存开销小
 - 支持主流编程语言
+`
+      },
+      {
+        id: 'cache',
+        title: '语义缓存',
+        content: `
+## 语义缓存
+
+相同或雷同的提问命中缓存后直接返回结果，跳过 LLM 调用，节省 token 与时间。
+
+### 配置
+
+在「设置」→「语义缓存」中开启。
+`
+      },
+      {
+        id: 'uploads',
+        title: '对话附件上传',
+        content: `
+## 对话附件上传
+
+输入框支持拖拽或点击上传图片和文件，经 WebSocket 以 base64 传输到后端：
+
+- **图片**：直接预览
+- **文件**：显示附件标签
+
+后端按厂商协议自动转发：
+
+| 厂商 | 协议 |
+|------|------|
+| OpenAI | vision：\`image_url\` |
+| Claude | \`base64\` source |
+| Gemini | \`inline_data\` |
+`
+      },
+      {
+        id: 'files',
+        title: '文件管理器',
+        content: `
+## 文件管理器
+
+### 全盘浏览
+
+文件管理器支持任意绝对路径（含根目录 \`/\`），可自由输入目录跳转、向上导航到根；相对路径仍按工作目录解析。
+
+### 文件操作
+
+每行提供操作按钮：
+
+- ✎ 编辑（内置编辑器）
+- 🗑 删除（非空目录二次确认后递归删除）
+- 新建文件 / 新建文件夹
+- 🔐 修改权限
+- 👤 修改所有者
+
+### 上传与下载
+
+- **上传**：工具栏多选文件上传到当前浏览目录（支持绝对目录），使用设备原始文件名，同名自动 \`_1\`/\`_2\` 去重
+- **下载**：文件为附件直链下载；文件夹实时递归打包为 zip 流式下载；中文文件名使用 RFC 5987 编码
+
+### API
+
+\`\`\`bash
+GET  /api/files?path=…       # 列目录（相对/绝对路径）
+GET  /api/file?path=…        # 读取文件
+POST /api/mkdir              # 新建文件夹
+POST /api/upload             # multipart：file + dir（dir 可为绝对路径，缺省为工作目录）
+GET  /api/download?path=…    # 文件→附件；目录→zip
+POST /api/delete             # 删除文件/目录（非空目录递归）
+POST /api/chmod              # {path, mode} 八进制 644/755/0o644
+POST /api/chown              # {path, owner} uid:gid，-1 表示不变
+\`\`\`
+
+> 以上 API 均走登录认证。文件管理器可操作全盘，公网部署请务必启用 \`--password\` 登录认证。
 `
       }
     ]
@@ -402,9 +570,17 @@ tls_key = ""
 | \`dot\` | DNS over TLS | \`1.1.1.1:853\` |
 | \`doh\` | DNS over HTTPS | \`https://1.1.1.1/dns-query\` |
 
+### 多服务器容灾
+
+可同时配置多个 DNS 服务器，并发取最快结果，单个服务器故障时自动切换。
+
+### 预设
+
+内置预设：Cloudflare / Google / 阿里 DNS / DNSPod / Quad9 / OpenDNS，也支持填写任意自定义 DoH URL / DoT 地址 / 普通 DNS。
+
 ### 配置
 
-在「设置」→「DNS」中选择模式并填写服务器地址。
+「设置」→「DNS」为多服务器列表：预设下拉一键添加 + 自定义任意服务器。所有 AI 客户端（OpenAI / Claude / Gemini / Ollama）的 HTTP 请求均走自定义 DNS。
 `
       }
     ]
@@ -560,6 +736,23 @@ description: 代码审查技能
   "url": "https://mcp.example.com/api"
 }
 \`\`\`
+
+### 内置预设
+
+内置常见 MCP 服务器预设，一键添加即可使用：
+
+\`filesystem\` \`git\` \`github\` \`postgres\` \`sqlite\` \`memory\` \`puppeteer\` \`brave-search\` \`fetch\`
+
+### 管理界面
+
+Web 前端提供独立「MCP」标签页：预设按钮一键添加，也可自定义任意服务器（\`stdio\` 命令 / \`http\` URL），并支持 JSON 高级编辑。
+
+### 实现要点
+
+- Content-Length 帧解析，兼容 NDJSON，修复旧实现换行分隔的解析失败
+- MCPManager 连接池，无全局可变状态，并发安全关闭
+- 保留真实工具 schema（不再硬编码 object）
+- 保持 \`CloseMCPClients()\` 兼容旧 API
 
 ### 工具注册
 
@@ -781,7 +974,33 @@ docker build -t licode .
 docker run -d -p 8080:8080 -v licode-data:/root/.licode licode
 \`\`\`
 `
+      },
+      {
+        id: 'health',
+        title: '健康检查与优雅关停',
+        content: `
+## 健康检查与优雅关停
+
+### 健康探针
+
+- \`GET /health\`：存活探针，进程存活即返回 200
+- \`GET /ready\`：就绪探针，服务可正常接受请求时返回 200
+
+可配合 Docker / Kubernetes / systemd 的存活与就绪检查使用。
+
+### 优雅关停
+
+收到 \`SIGTERM\` / \`SIGINT\` 时：
+
+1. 停止接收新请求
+2. 等待进行中的任务完成（超时时间可通过 \`shutdown_timeout\` 配置）
+3. 关闭插件与 MCP 子进程
+
+\`\`\`bash
+kill -TERM $(pgrep licode)
+\`\`\`
+`
       }
     ]
   }
-];
+]
