@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowLeft, ArrowRight } from 'lucide-vue-next'
 import { Button, Empty } from 'fuxsto-design'
 import { useDocs } from '~/composables/useDocs'
 import MarkdownRenderer from '~/components/MarkdownRenderer.vue'
@@ -53,7 +52,7 @@ onMounted(() => {
               class="group flex max-w-[48%] flex-col gap-1 rounded-xl border border-border p-3.5 transition-all hover:border-primary hover:shadow-sm"
             >
               <span class="flex items-center gap-1 text-xs text-muted-foreground">
-                <ArrowLeft class="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+                <Icon name="lucide:arrow-left" class="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
                 上一篇
               </span>
               <span class="truncate text-sm font-medium">{{ nav.prev.doc.title }}</span>
@@ -67,7 +66,7 @@ onMounted(() => {
             >
               <span class="flex items-center gap-1 text-xs text-muted-foreground">
                 下一篇
-                <ArrowRight class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                <Icon name="lucide:arrow-right" class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </span>
               <span class="truncate text-sm font-medium">{{ nav.next.doc.title }}</span>
             </NuxtLink>
@@ -80,7 +79,7 @@ onMounted(() => {
             <template #extra>
               <Button
                 variant="outline"
-                :icon="ArrowLeft"
+                :icon="iconify('lucide:arrow-left')"
                 @click="navigateTo(`/docs/${firstDoc().cat.id}/${firstDoc().doc.id}`)"
               >
                 返回文档首页

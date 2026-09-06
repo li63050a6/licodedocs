@@ -9,7 +9,8 @@ licode（Go 编写的 AI 编程助手）的官网与文档站，基于 **Nuxt 4 
 | 框架 | Nuxt 4（Vue 3） | SSR / 预渲染 / 文件式路由 / SEO 友好 |
 | UI 组件库 | fuxsto-design v0.1.1 | 基于 Tailwind v4 的 Vue 3 组件库，内置主题令牌与暗色模式 |
 | 样式 | Tailwind CSS v4 | 零配置、CSS 优先，`@theme` 直接桥接设计令牌 |
-| 图标 | lucide-vue-next | 按需引入、tree-shaking |
+| 图标 | @nuxt/icon + @iconify-json/lucide | 全局 `<Icon>` 组件，lucide 图标构建期扫描本地打包（22 个 / 6.36KB），CSS mask 渲染，无运行时网络请求 |
+| 字体 | @nuxt/fonts | 构建期自托管 Inter / JetBrains Mono（woff2 + size-adjust 度量回退），中文回退系统字体 |
 | 文档渲染 | marked | 标准 Markdown → HTML，支持 GFM 表格与代码块 |
 | 主题 | CSS 变量 + `.dark` 类 | zinc 黑白工业风，跟随系统 + 手动切换（持久化） |
 | 动画 | Vue Transition + IntersectionObserver | 页面切换、文档切换、滚动揭示、悬停动效 |
@@ -65,7 +66,7 @@ licode（Go 编写的 AI 编程助手）的官网与文档站，基于 **Nuxt 4 
 ### 环境要求
 
 - Node.js ≥ 20（开发环境 v24.19.0），npm 包源使用 npmmirror
-- 关键依赖：nuxt ^4.5.2、tailwindcss 4.3.3、fuxsto-design 0.1.1、marked ^16
+- 关键依赖：nuxt ^4.5.2、tailwindcss 4.3.3、fuxsto-design 0.1.1、marked ^16、@nuxt/fonts、@nuxt/icon
 
 ### 安装与启动
 
@@ -210,7 +211,7 @@ npm run generate   # 产物在 .output/public，可直接上传任意静态托�
 ### 主题系统
 
 - 全部颜色令牌定义在 `main.css`：`:root`（亮）与 `html.dark`（暗），数值与 fuxsto-design 出厂 zinc 一致，并显式 `color-scheme`。
-- `@theme` 桥接 `--font-sans` / `--font-mono`；`bg-primary`、`text-muted-foreground` 等工具类由 fuxsto `@import "fuxsto-design/styles"` 提供。
+- `@theme` 桥接 `--font-sans` / `--font-mono`（Inter / JetBrains Mono 由 `@nuxt/fonts` 构建期下载自托管，中文走系统字体）；`bg-primary`、`text-muted-foreground` 等工具类由 fuxsto `@import "fuxsto-design/styles"` 提供。
 - 主题切换双份实现：`useTheme`（运行时）+ nuxt.config 内联脚本（首屏），持久化键统一 `licode_theme`。
 
 ### Markdown 渲染管线
@@ -242,8 +243,9 @@ npm run generate   # 产物在 .output/public，可直接上传任意静态托�
 ### 依赖锁定与兼容性
 
 - `typescript` **锁定 5.9.3**：`typescript@7` 与 `vue-tsc` 不兼容（`./lib/tsc` 导出报错）。
-- npm 源为 **npmmirror**；fuxsto-design 0.1.1 的 peer 依赖 `lucide-vue-next ^0.577.0`。
-- 关键依赖：`nuxt ^4.5.2`、`tailwindcss 4.3.3`、`marked ^16`、`@tailwindcss/vite`。
+- npm 源为 **npmmirror**；fuxsto-design 0.1.1 的 peer 依赖 `lucide-vue-next ^0.577.0`（站点自身图标已改用 `@nuxt/icon`，lucide-vue-next 仅为 fuxsto 内部默认图标保留）。
+- 关键依赖：`nuxt ^4.5.2`、`tailwindcss 4.3.3`、`marked ^16`、`@tailwindcss/vite`、`@nuxt/fonts`、`@nuxt/icon`、`@iconify-json/lucide`。
+- `@nuxt/icon` 需开启 `clientBundle.scan: true`：静态 generate 下 provider 为 `iconify`，若不本地打包图标会在预渲染时请求 api.iconify.design 超时，产出空图标。
 
 ### 关键约定与坑
 
@@ -252,6 +254,7 @@ npm run generate   # 产物在 .output/public，可直接上传任意静态托�
 - **changelog frontmatter 正则需兼容 CRLF**：Windows 保存的 `.md` 若为 CRLF 行尾，`/^---\n/` 会匹配失败导致 version/date 解析为空、首页版本错乱。正则统一用 `/^---\r?\n([\s\S]*?)\r?\n---/`；新增文件建议保持 LF。
 - **同日发布的多个 changelog 需二次排序**：仅按 `date` 排序不稳定（依赖 glob 字母序），必须「同日期再按 version 倒序」，否则首页会显示旧版本。
 - **typescript 锁定 5.9.3**：同「依赖锁定」。
+- **@nuxt/icon 图标必须本地打包**：`icon.clientBundle.scan: true`（原因见「依赖锁定与兼容性」）；fuxsto-design 的 `:icon` / `:prefix-icon` 等 prop 接收组件，用 `app/utils/iconify.ts` 的 `iconify('lucide:xxx')` 包装（自动导入），模板内直接写 `<Icon name="lucide:xxx">`。
 - 主题切换在 `useTheme` 与 nuxt.config 内联脚本中双份实现，保证首屏不闪变；两者读取的持久化键必须一致（`licode_theme`）。
 - 文档 `content` 是模板字符串：代码块内的反引号要写成 `` \` ``，`${}` 需转义为 `\${}`，否则被插值或破坏语法。
 

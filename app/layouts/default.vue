@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { BackTop } from 'fuxsto-design'
-import { ArrowUp } from 'lucide-vue-next'
 import { useTheme } from '~/composables/useTheme'
 
 const { init } = useTheme()
@@ -15,7 +14,7 @@ onMounted(init)
     </main>
     <SiteFooter />
     <ClientOnly>
-      <BackTop :right="24" :bottom="72" round shadow="md" :icon="ArrowUp" />
+      <BackTop :right="24" :bottom="72" round shadow="md" :icon="iconify('lucide:arrow-up')" />
     </ClientOnly>
   </div>
 </template>

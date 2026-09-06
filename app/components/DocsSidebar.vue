@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ChevronDown, FileText, Search } from 'lucide-vue-next'
 import { Empty, Input } from 'fuxsto-design'
 import { useDocs } from '~/composables/useDocs'
 
@@ -46,7 +45,7 @@ const toggle = (id: string) => {
         size="sm"
         clearable
         placeholder="搜索文档…"
-        :prefix-icon="Search"
+        :prefix-icon="iconify('lucide:search')"
         class="w-full"
       />
     </div>
@@ -88,7 +87,8 @@ const toggle = (id: string) => {
               <span class="text-base leading-none">{{ cat.icon }}</span>
               {{ cat.title }}
             </span>
-            <ChevronDown
+            <Icon
+              name="lucide:chevron-down"
               class="h-4 w-4 transition-transform duration-300"
               :class="openCats.includes(cat.id) ? 'rotate-180' : ''"
             />
@@ -111,7 +111,7 @@ const toggle = (id: string) => {
                     ? 'bg-primary/10 font-medium text-primary'
                     : 'text-muted-foreground hover:bg-accent hover:text-foreground'"
                 >
-                  <FileText class="h-3.5 w-3.5 shrink-0 opacity-60" />
+                  <Icon name="lucide:file-text" class="h-3.5 w-3.5 shrink-0 opacity-60" />
                   <span class="truncate">{{ d.title }}</span>
                 </NuxtLink>
               </div>

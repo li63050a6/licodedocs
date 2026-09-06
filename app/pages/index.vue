@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import {
-  Blocks,
-  GitBranch,
-  Github,
-  MessagesSquare,
-  Rocket,
-  ShieldCheck,
-  Sparkles,
-  Wrench,
-} from 'lucide-vue-next'
 import { Button, Card, Chip } from 'fuxsto-design'
 import { useDocs } from '~/composables/useDocs'
 import MarkdownRenderer from '~/components/MarkdownRenderer.vue'
@@ -20,39 +10,42 @@ useHead({
   title: 'licode — AI 编程助手',
 })
 
+const rocketIcon = iconify('lucide:rocket')
+const githubIcon = iconify('lucide:github')
+
 const features = [
   {
-    icon: Sparkles,
+    icon: 'lucide:sparkles',
     title: '多 AI 提供商',
     desc: 'OpenAI / Claude / Ollama / Gemini 一键切换，均用各自原生接口。',
     link: '/docs/config/config-file',
   },
   {
-    icon: Wrench,
+    icon: 'lucide:wrench',
     title: '工具调用',
     desc: '读写文件、代码搜索、Shell 执行，Agent 自主调用并回填。',
     link: '/docs/features/tools',
   },
   {
-    icon: GitBranch,
+    icon: 'lucide:git-branch',
     title: '子代理系统',
     desc: 'explorer / builder / planner，DAG 依赖并行调度。',
     link: '/docs/features/subagents',
   },
   {
-    icon: MessagesSquare,
+    icon: 'lucide:messages-square',
     title: '多对话',
     desc: '会话列表、自动标题、分支，实时保存到磁盘。',
     link: '/docs/features/sessions',
   },
   {
-    icon: ShieldCheck,
+    icon: 'lucide:shield-check',
     title: '代码审计',
     desc: '12 类静态规则 + LLM 深度分析，一键修复并备份。',
     link: '/docs/features/audit',
   },
   {
-    icon: Blocks,
+    icon: 'lucide:blocks',
     title: '扩展能力',
     desc: 'MCP、Skills、WASM 插件、外部工具热加载。',
     link: '/docs/extend/mcp',
@@ -88,7 +81,7 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
 
       <div class="mx-auto max-w-6xl px-4 pb-20 pt-20 text-center md:pt-28">
         <div v-reveal class="mb-6 flex justify-center">
-          <Chip variant="outline" round :suffix-icon="Rocket" class="gap-1.5 !px-3 !py-1">
+          <Chip variant="outline" round :suffix-icon="rocketIcon" class="gap-1.5 !px-3 !py-1">
             v{{ latest.version }} · {{ latest.date }} 已发布
           </Chip>
         </div>
@@ -106,12 +99,12 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
 
         <div v-reveal="200" class="mt-9 flex flex-wrap items-center justify-center gap-3">
           <NuxtLink to="/docs/quickstart/install">
-            <Button variant="primary" size="lg" round :icon="Rocket">
+            <Button variant="primary" size="lg" round :icon="rocketIcon">
               快速开始
             </Button>
           </NuxtLink>
           <a href="https://github.com/li63050a/licode" target="_blank" rel="noopener noreferrer">
-            <Button variant="outline" size="lg" round :icon="Github">
+            <Button variant="outline" size="lg" round :icon="githubIcon">
               GitHub
             </Button>
           </a>
@@ -158,7 +151,7 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
             class="feature-card h-full"
           >
             <div class="mb-3 inline-flex rounded-xl bg-primary/10 p-2.5 text-primary">
-              <component :is="f.icon" class="h-5 w-5" />
+              <Icon :name="f.icon" class="h-5 w-5" />
             </div>
             <h3 class="text-base font-semibold">{{ f.title }}</h3>
             <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">{{ f.desc }}</p>
@@ -222,7 +215,7 @@ const providers = ['OpenAI', 'Claude', 'Ollama', 'Gemini']
         </p>
         <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
           <NuxtLink to="/docs/quickstart/install">
-            <Button variant="primary" size="lg" round :icon="Rocket">查看文档</Button>
+            <Button variant="primary" size="lg" round :icon="rocketIcon">查看文档</Button>
           </NuxtLink>
           <a href="https://github.com/li63050a/licode" target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" size="lg" round>GitHub · Star</Button>

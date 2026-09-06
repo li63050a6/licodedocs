@@ -4,11 +4,14 @@
 @import "tailwindcss";
 @import "fuxsto-design/styles";
 
-/* ---- 字体 ---- */
+/* ---- 字体 ----
+   Inter / JetBrains Mono 由 @nuxt/fonts 构建期自动下载并自托管（拉丁字符），
+   中文回退到系统字体，避免引入庞大的 CJK webfont。 */
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas,
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Consolas,
     "Courier New", monospace;
 }
 

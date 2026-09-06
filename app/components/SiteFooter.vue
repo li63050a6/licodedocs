@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Github } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -19,7 +18,7 @@ import { Github } from 'lucide-vue-next'
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-primary"
         >
-          <Github class="h-4 w-4" />
+          <Icon name="lucide:github" class="h-4 w-4" />
           GitHub
         </a>
       </div>

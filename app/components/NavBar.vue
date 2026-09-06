@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Github, Menu, Moon, Sun, X } from 'lucide-vue-next'
 import { useTheme } from '~/composables/useTheme'
 
 const { theme, toggle } = useTheme()
@@ -48,8 +47,8 @@ const isActive = (to: string) => {
           @click="toggle"
         >
           <Transition name="fade" mode="out-in">
-            <Moon v-if="theme === 'dark'" key="moon" class="h-4 w-4" />
-            <Sun v-else key="sun" class="h-4 w-4" />
+            <Icon v-if="theme === 'dark'" key="moon" name="lucide:moon" class="h-4 w-4" />
+            <Icon v-else key="sun" name="lucide:sun" class="h-4 w-4" />
           </Transition>
         </button>
 
@@ -60,7 +59,7 @@ const isActive = (to: string) => {
           class="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-accent hover:text-foreground"
           aria-label="GitHub"
         >
-          <Github class="h-4 w-4" />
+          <Icon name="lucide:github" class="h-4 w-4" />
         </a>
 
         <button
@@ -68,8 +67,8 @@ const isActive = (to: string) => {
           aria-label="菜单"
           @click="mobileOpen = !mobileOpen"
         >
-          <X v-if="mobileOpen" class="h-5 w-5" />
-          <Menu v-else class="h-5 w-5" />
+          <Icon v-if="mobileOpen" name="lucide:x" class="h-5 w-5" />
+          <Icon v-else name="lucide:menu" class="h-5 w-5" />
         </button>
       </div>
     </div>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Github, Globe, Mail, MessageCircle, Tv } from 'lucide-vue-next'
 import { Card } from 'fuxsto-design'
 
 useHead({
@@ -8,35 +7,35 @@ useHead({
 
 const items = [
   {
-    icon: Github,
+    icon: 'lucide:github',
     label: 'GitHub',
     value: 'github.com/li63050a/licode',
     href: 'https://github.com/li63050a/licode',
     accent: 'bg-foreground/8 text-foreground',
   },
   {
-    icon: Globe,
+    icon: 'lucide:globe',
     label: 'Gitee',
     value: 'gitee.com/li63050a/licode',
     href: 'https://gitee.com/li63050a/licode',
     accent: 'bg-foreground/8 text-foreground',
   },
   {
-    icon: Tv,
+    icon: 'lucide:tv',
     label: 'B 站',
     value: '小帅5656 — 关注获取最新动态、教程、演示',
     href: 'https://b23.tv/nDqj0DT',
     accent: 'bg-foreground/8 text-foreground',
   },
   {
-    icon: MessageCircle,
+    icon: 'lucide:message-circle',
     label: 'QQ 技术交流群',
     value: '群号：1026939741 — 提问、反馈 bug、讨论功能',
     href: 'https://qun.qq.com/universal-share/share?ac=1&authKey=zq9BYcTtBQm6GbvWiEWiBvDWNWbqhw2%2F%2BRnGM21c0jcL%2FofGqBFeXLr%2BtYT3SkO6&busi_data=eyJncm91cENvZGUiOiIxMDI2OTM5NzQxIiwidG9rZW4iOiJxNkNWUTUxYXVxSmRHZXRvdWtkZnhaN25INzJrMmNaNFpVTjJ5ZTVLYmRvWTFuOEZTd093UXBtQi8vQWk2T1JyIiwidWluIjoiMzYzNTczNjE4MCJ9&data=073ZrPEFZXFvoEDWatbWTidAitiN4OIbiaVDWoR7hVIwJurEPC7Swm6OREVpn6omzobXLn3SRErNKxKbYDTZQA&svctype=4&tempid=h5_group_info',
     accent: 'bg-foreground/8 text-foreground',
   },
   {
-    icon: Mail,
+    icon: 'lucide:mail',
     label: '开发者邮箱',
     value: 'li63050@qq.com',
     href: 'mailto:li63050@qq.com',
@@ -74,7 +73,7 @@ const items = [
             class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110"
             :class="item.accent"
           >
-            <component :is="item.icon" class="h-5 w-5" />
+            <Icon :name="item.icon" class="h-5 w-5" />
           </div>
           <div class="min-w-0">
             <div class="font-semibold">{{ item.label }}</div>

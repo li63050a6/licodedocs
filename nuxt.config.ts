@@ -7,6 +7,25 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-30',
   devtools: { enabled: true },
 
+  modules: ['@nuxt/fonts', '@nuxt/icon'],
+
+  fonts: {
+    families: [
+      { name: 'Inter', weights: [400, 500, 600, 700] },
+      { name: 'JetBrains Mono', weights: [400, 700] },
+    ],
+  },
+
+  icon: {
+    mode: 'css',
+    serverBundle: {
+      collections: ['lucide'],
+    },
+    clientBundle: {
+      scan: true,
+    },
+  },
+
   css: ['~/assets/css/main.css'],
 
   vite: {
